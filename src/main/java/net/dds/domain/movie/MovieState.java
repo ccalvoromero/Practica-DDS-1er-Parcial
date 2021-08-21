@@ -1,5 +1,5 @@
 package net.dds.domain.movie;
 
-public enum State {
+public enum MovieState {
     AVAILABLE, RENTED, SOLD
 }

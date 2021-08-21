@@ -3,11 +3,11 @@ package net.dds.infrastructure.inmemory;
 import java.util.List;
 import java.util.ArrayList;
 
-import net.dds.domain.MovieRepository;
 import net.dds.domain.movie.Movie;
+import net.dds.domain.MovieRepository;
 import net.dds.domain.exceptions.NotAvailableMovie;
 
-import static net.dds.domain.movie.State.AVAILABLE;
+import static net.dds.domain.movie.MovieState.AVAILABLE;
 
 public class InMemoryMovieRepository implements MovieRepository {
 

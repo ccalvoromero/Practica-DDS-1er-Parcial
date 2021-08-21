@@ -1,3 +1,3 @@
 package net.dds.infrastructure.database;
 
-public class MovieDataAccessObject { }
+public interface MovieDataAccessObject { }

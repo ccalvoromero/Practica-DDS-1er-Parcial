@@ -1,7 +1,7 @@
 package net.dds.infrastructure.database;
 
-import net.dds.domain.MovieRepository;
 import net.dds.domain.movie.Movie;
+import net.dds.domain.MovieRepository;
 
 public class SQLMovieRepository implements MovieRepository {
 

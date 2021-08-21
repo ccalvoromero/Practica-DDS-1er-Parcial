@@ -1,18 +1,18 @@
-package net.dds.domain.client;
+package net.dds.domain.customer;
 
-public class Uncertain implements CustomerState {
+public class Loyal implements CustomerState {
 
     private static CustomerState instance;
 
     public static CustomerState instance() {
         if(instance == null)
-            instance = new Uncertain();
+            instance = new Loyal();
         return instance;
     }
 
     @Override
     public void change(Customer customer) {
-        customer.setState(Regular.instance());
+        customer.setState(Uncertain.instance());
     }
 
 }

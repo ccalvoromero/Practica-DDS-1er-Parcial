@@ -1,4 +1,4 @@
-package net.dds.domain.client;
+package net.dds.domain.customer;
 
 import java.util.List;
 import java.util.ArrayList;
