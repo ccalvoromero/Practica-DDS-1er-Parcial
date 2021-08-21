@@ -1,4 +1,4 @@
-package net.dds.infrastructure;
+package net.dds.infrastructure.inmemory;
 
 import java.util.List;
 import java.util.ArrayList;

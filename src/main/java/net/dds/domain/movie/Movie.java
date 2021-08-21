@@ -44,4 +44,5 @@ public class Movie {
     public void returned() {
         this.state = AVAILABLE;
     }
+
 }
