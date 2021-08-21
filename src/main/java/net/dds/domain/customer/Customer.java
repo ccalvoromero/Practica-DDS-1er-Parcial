@@ -24,20 +24,21 @@ public class Customer {
     }
 
     public void rentMovie(Movie movie, Integer days, PaymentMethod paymentMethod) {
-        paymentMethod.pay(movie.rentPrice(days));
+        paymentMethod.pay(state.membershipPrice(movie.rentPrice(days)));
         movie.rented();
-        rentedMovies.add(movie);
+        this.rentedMovies.add(movie);
     }
 
     public void buyMovie(Movie movie, PaymentMethod paymentMethod){
         paymentMethod.pay(movie.buyPrice());
         movie.sold();
-        purchasedMovies.add(movie);
+        this.purchasedMovies.add(movie);
     }
 
-    public void returnMovie(Movie movie, boolean movieHasIssues) {
+    public void returnMovie(Movie movie) {
         movie.returned();
-        rentedMovies.remove(movie);
+        this.rentedMovies.remove(movie);
+        state.change(this); // #1 Aca o en el use case
     }
 
     private void changeState(){
@@ -48,4 +49,31 @@ public class Customer {
         this.state = state;
     }
 
+    public void addIssue(){
+        this.issues++;
+    }
+
+    public void resetIssues(){
+        this.issues = 0;
+    }
+
+    public void resetRentedMoviesWithoutIssues (){
+        this.rentedMoviesWithoutIssues = 0;
+    }
+
+    public void addRentedMovieWithoutIssue (){
+        this.rentedMoviesWithoutIssues++;
+    }
+
+    public Integer issues() {
+        return issues;
+    }
+
+    public Integer rentedMoviesWithoutIssues() {
+        return rentedMoviesWithoutIssues;
+    }
+
+    public Integer totalPurchasedMovies(){
+        return this.purchasedMovies.size();
+    }
 }
