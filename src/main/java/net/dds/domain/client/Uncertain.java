@@ -6,14 +6,13 @@ public class Uncertain implements CustomerState {
 
     public static CustomerState instance() {
         if(instance == null)
-            instance = new Loyal();
+            instance = new Uncertain();
         return instance;
     }
 
     @Override
     public void change(Customer customer) {
-        customer.setState(new Regular());
+        customer.setState(Regular.instance());
     }
-
 
 }

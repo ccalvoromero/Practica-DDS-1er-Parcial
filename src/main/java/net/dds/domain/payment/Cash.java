@@ -5,8 +5,8 @@ public class Cash implements PaymentMethod {
     private static final Double discount = 0.05;
 
     @Override
-    public void pay(Double price) {
-        System.out.println("Final price: " + price * -discount);
+    public void pay(Double amount) {
+        System.out.println("Final price: " + amount * -discount);
     }
 
 }

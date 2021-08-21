@@ -1,39 +1,47 @@
 package net.dds.domain.movie;
 
+import static net.dds.domain.movie.State.*;
+
 public class Movie {
 
     private final Integer id;
     private final String name;
     private final Double buyPrice;
-    private MovieState state;
-
+    private State state = AVAILABLE;
     private static final Double rentalCoefficient = 0.05;
 
     public Movie(Integer id, String name, Double buyPrice) {
         this.id = id;
         this.name = name;
         this.buyPrice = buyPrice;
-        this.state = MovieState.AVAILABLE;
+    }
+
+    public Integer id() {
+        return this.id;
+    }
+
+    public Double buyPrice(){
+        return this.buyPrice;
+    }
+
+    public State state() {
+        return this.state;
     }
 
     public Double rentPrice(Integer days){
         return buyPrice * rentalCoefficient * days;
     }
 
-    public Double buyPrice(){
-        return buyPrice;
+    public void rented() {
+        this.state = RENTED;
     }
 
-    public void rent() {
-        this.state = MovieState.RENTED;
+
+    public void sold() {
+        this.state = SOLD;
     }
 
-    public boolean equalsId(Integer id) {
-        return this.id.equals(id);
+    public void returned() {
+        this.state = AVAILABLE;
     }
-
-    public boolean isAvailable() {
-        return this.state == MovieState.AVAILABLE;
-    }
-
 }

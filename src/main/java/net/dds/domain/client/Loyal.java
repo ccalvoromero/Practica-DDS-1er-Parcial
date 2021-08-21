@@ -12,7 +12,7 @@ public class Loyal implements CustomerState {
 
     @Override
     public void change(Customer customer) {
-        customer.setState(new Uncertain());
+        customer.setState(Uncertain.instance());
     }
 
 }

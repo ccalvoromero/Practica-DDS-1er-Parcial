@@ -12,7 +12,7 @@ public class Regular implements CustomerState {
 
     @Override
     public void change(Customer customer) {
-        customer.setState(new Loyal()); // Uncertain o Loyal, depende
+        customer.setState(Loyal.instance()); //TODO Uncertain o Loyal
     }
 
 }
