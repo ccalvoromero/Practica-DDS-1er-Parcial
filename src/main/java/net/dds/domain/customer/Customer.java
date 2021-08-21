@@ -2,7 +2,6 @@ package net.dds.domain.customer;
 
 import java.util.List;
 import java.util.ArrayList;
-
 import net.dds.domain.movie.Movie;
 import net.dds.domain.payment.PaymentMethod;
 
@@ -11,50 +10,47 @@ public class Customer {
     private final Integer documentNumber;
     private final List<Movie> rentedMovies = new ArrayList<>();
     private final List<Movie> purchasedMovies = new ArrayList<>();
-    private CustomerState state;
+    private CustomerType type;
 
-    private Integer issues;
+    private Integer movieIssues;
     private Integer rentedMoviesWithoutIssues;
 
     public Customer(Integer documentNumber) {
         this.documentNumber = documentNumber;
-        this.issues = 0;
+        this.movieIssues = 0;
         this.rentedMoviesWithoutIssues = 0;
-        this.state = Regular.instance();
+        this.type = Regular.instance();
     }
 
     public void rentMovie(Movie movie, Integer days, PaymentMethod paymentMethod) {
-        paymentMethod.pay(state.membershipPrice(movie.rentPrice(days)));
+        Double rentPrice = movie.rentPrice(days);
+        paymentMethod.pay(type.customerPrice(rentPrice));
         movie.rented();
-        this.rentedMovies.add(movie);
+        rentedMovies.add(movie);
     }
 
-    public void buyMovie(Movie movie, PaymentMethod paymentMethod){
+    public void buyMovie(Movie movie, PaymentMethod paymentMethod) {
         paymentMethod.pay(movie.buyPrice());
         movie.sold();
-        this.purchasedMovies.add(movie);
+        purchasedMovies.add(movie);
     }
 
     public void returnMovie(Movie movie) {
         movie.returned();
-        this.rentedMovies.remove(movie);
-        state.change(this); // #1 Aca o en el use case
+        rentedMovies.remove(movie);
+        type.change(this);
     }
 
-    private void changeState(){
-        this.state.change(this);
+    protected void setType(CustomerType type){
+        this.type = type;
     }
 
-    protected void setState(CustomerState state){
-        this.state = state;
+    public void addMovieIssue(){
+        this.movieIssues++;
     }
 
-    public void addIssue(){
-        this.issues++;
-    }
-
-    public void resetIssues(){
-        this.issues = 0;
+    public void resetMovieIssues(){
+        this.movieIssues = 0;
     }
 
     public void resetRentedMoviesWithoutIssues (){
@@ -65,15 +61,16 @@ public class Customer {
         this.rentedMoviesWithoutIssues++;
     }
 
-    public Integer issues() {
-        return issues;
+    public Integer movieIssues() {
+        return this.movieIssues;
     }
 
     public Integer rentedMoviesWithoutIssues() {
-        return rentedMoviesWithoutIssues;
+        return this.rentedMoviesWithoutIssues;
     }
 
     public Integer totalPurchasedMovies(){
         return this.purchasedMovies.size();
     }
+
 }

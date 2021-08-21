@@ -1,11 +1,12 @@
 package net.dds.domain.customer;
 
-public class Uncertain implements CustomerState {
+public class Uncertain implements CustomerType {
 
-    private static CustomerState instance;
-    private static double membershipCoefficient = 1.05;
+    private static CustomerType instance;
+    private static final double membershipCoefficient = 1.05;
+    private static final int minimumRentedMoviesWithoutIssues = 10;
 
-    public static CustomerState instance() {
+    public static CustomerType instance() {
         if(instance == null)
             instance = new Uncertain();
         return instance;
@@ -13,13 +14,12 @@ public class Uncertain implements CustomerState {
 
     @Override
     public void change(Customer customer) {
-        if(customer.rentedMoviesWithoutIssues() >= 10 ){
-            customer.setState(Regular.instance());
-        }
+        if(customer.rentedMoviesWithoutIssues() >= minimumRentedMoviesWithoutIssues)
+            customer.setType(Regular.instance());
     }
 
     @Override
-    public Double membershipPrice(Double rentPrice) {
+    public Double customerPrice(Double rentPrice) {
         return rentPrice * membershipCoefficient;
     }
 

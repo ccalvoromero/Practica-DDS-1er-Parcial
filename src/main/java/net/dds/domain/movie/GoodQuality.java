@@ -2,10 +2,10 @@ package net.dds.domain.movie;
 
 import net.dds.domain.customer.Customer;
 
-public class GoodQuality implements StrategyIssues {
+public class GoodQuality implements QualityChecker {
 
-    public void execute(Customer customer) {
+    public void check(Customer customer) {
         customer.addRentedMovieWithoutIssue();
-
     }
+
 }

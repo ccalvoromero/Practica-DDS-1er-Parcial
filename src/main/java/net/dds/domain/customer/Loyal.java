@@ -1,11 +1,12 @@
 package net.dds.domain.customer;
 
-public class Loyal implements CustomerState {
+public class Loyal implements CustomerType {
 
-    private static CustomerState instance;
-    private static double membershipCoefficient = 0.85;
+    private static CustomerType instance;
+    private static final double membershipCoefficient = 0.85;
+    private static final int maximumMovieIssues = 8;
 
-    public static CustomerState instance() {
+    public static CustomerType instance() {
         if(instance == null)
             instance = new Loyal();
         return instance;
@@ -13,13 +14,14 @@ public class Loyal implements CustomerState {
 
     @Override
     public void change(Customer customer) {
-        if(customer.issues() >= 8 ){
-        customer.setState(Regular.instance());
-        customer.resetIssues();
-    }}
+        if(customer.movieIssues() >= maximumMovieIssues){
+            customer.setType(Regular.instance());
+            customer.resetMovieIssues();
+        }
+    }
 
     @Override
-    public Double membershipPrice(Double rentPrice) {
+    public Double customerPrice(Double rentPrice) {
         return rentPrice * membershipCoefficient;
     }
 
