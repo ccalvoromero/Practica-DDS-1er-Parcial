@@ -18,7 +18,7 @@ public class RentMovie {
         this.customerRepository = customerRepository;
     }
 
-    public void execute(Integer movieId, Integer rentalDays, Long customerDocumentNumber) {
+    public void execute(Integer movieId, Integer rentalDays, Integer customerDocumentNumber) {
         Movie movie = movieRepository.findAvailableMovie(movieId);
         Customer customer = customerRepository.findByDocumentNumber(customerDocumentNumber);
         customer.rentMovie(movie, rentalDays, paymentMethod);

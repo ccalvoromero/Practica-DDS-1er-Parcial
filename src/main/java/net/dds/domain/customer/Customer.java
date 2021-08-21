@@ -8,13 +8,18 @@ import net.dds.domain.payment.PaymentMethod;
 
 public class Customer {
 
-    private final Long documentNumber;
+    private final Integer documentNumber;
     private final List<Movie> rentedMovies = new ArrayList<>();
-    private final List<Movie> soldMovies = new ArrayList<>();
+    private final List<Movie> purchasedMovies = new ArrayList<>();
     private CustomerState state;
 
-    public Customer(Long documentNumber) {
+    private Integer issues;
+    private Integer rentedMoviesWithoutIssues;
+
+    public Customer(Integer documentNumber) {
         this.documentNumber = documentNumber;
+        this.issues = 0;
+        this.rentedMoviesWithoutIssues = 0;
         this.state = Regular.instance();
     }
 
@@ -27,10 +32,10 @@ public class Customer {
     public void buyMovie(Movie movie, PaymentMethod paymentMethod){
         paymentMethod.pay(movie.buyPrice());
         movie.sold();
-        soldMovies.add(movie);
+        purchasedMovies.add(movie);
     }
 
-    public void returnMovie(Movie movie) {
+    public void returnMovie(Movie movie, boolean movieHasIssues) {
         movie.returned();
         rentedMovies.remove(movie);
     }

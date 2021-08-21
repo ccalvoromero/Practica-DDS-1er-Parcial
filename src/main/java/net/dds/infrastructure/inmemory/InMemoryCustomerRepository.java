@@ -11,7 +11,7 @@ public class InMemoryCustomerRepository implements CustomerRepository {
     private final List<Customer> customers = new ArrayList<>();
 
     @Override
-    public Customer findByDocumentNumber(Long documentNumber) {
+    public Customer findByDocumentNumber(Integer documentNumber) {
         return new Customer(documentNumber);
     }
 

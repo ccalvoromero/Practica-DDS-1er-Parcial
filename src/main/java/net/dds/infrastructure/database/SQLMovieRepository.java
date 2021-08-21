@@ -17,6 +17,11 @@ public class SQLMovieRepository implements MovieRepository {
     }
 
     @Override
+    public Movie findRentedMovie(Integer id) {
+        return new Movie(id, "", 0.0);
+    }
+
+    @Override
     public void save(Movie movie) { }
 
 }
