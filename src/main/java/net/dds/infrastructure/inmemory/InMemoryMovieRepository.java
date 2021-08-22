@@ -14,11 +14,8 @@ public class InMemoryMovieRepository implements MovieRepository {
     private final List<Movie> movies = new ArrayList<>();
 
     @Override
-    public Movie findAvailableMovie(Integer id) {
-        return movies.stream()
-            .filter(movie -> movie.id().equals(id) && movie.state().equals(AVAILABLE))
-            .findFirst()
-            .orElseThrow(NotAvailableMovie::new);
+    public void save(Movie movie) {
+        movies.add(movie);
     }
 
     @Override
@@ -30,8 +27,19 @@ public class InMemoryMovieRepository implements MovieRepository {
     }
 
     @Override
-    public void save(Movie movie) {
-        movies.add(movie);
+    public Movie findAvailableMovie(Integer id) {
+        return movies.stream()
+            .filter(movie -> movie.id().equals(id) && movie.state().equals(AVAILABLE))
+            .findFirst()
+            .orElseThrow(NotAvailableMovie::new);
+    }
+
+    @Override
+    public Movie findById(Integer id) {
+        return movies.stream()
+            .filter(movie -> movie.id().equals(id))
+            .findFirst()
+            .orElseThrow(NotAvailableMovie::new);
     }
 
 }

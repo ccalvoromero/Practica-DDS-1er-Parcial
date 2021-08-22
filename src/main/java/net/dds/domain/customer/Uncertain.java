@@ -3,7 +3,7 @@ package net.dds.domain.customer;
 public class Uncertain implements CustomerType {
 
     private static CustomerType instance;
-    private static final double membershipCoefficient = 1.05;
+    private static final double customerCoefficient = 1.05;
     private static final int minimumRentedMoviesWithoutIssues = 10;
 
     public static CustomerType instance() {
@@ -20,7 +20,7 @@ public class Uncertain implements CustomerType {
 
     @Override
     public Double customerPrice(Double rentPrice) {
-        return rentPrice * membershipCoefficient;
+        return rentPrice * customerCoefficient;
     }
 
 }

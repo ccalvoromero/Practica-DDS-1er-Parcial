@@ -1,8 +1,10 @@
 package net.dds.domain.movie;
 
+import net.dds.domain.pack.MovieComponent;
+
 import static net.dds.domain.movie.MovieState.*;
 
-public class Movie {
+public class Movie implements MovieComponent {
 
     private final Integer id;
     private final String name;
@@ -20,7 +22,11 @@ public class Movie {
         return this.id;
     }
 
-    public Double buyPrice(){
+    public String name() {
+        return this.name;
+    }
+
+    public Double buyPrice() {
         return this.buyPrice;
     }
 

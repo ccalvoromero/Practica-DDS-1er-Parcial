@@ -21,7 +21,6 @@ public class MovieReviewAPI implements MovieReview {
             .build();
     }
 
-
     @Override
     public String findByName(String name) {
         try {
