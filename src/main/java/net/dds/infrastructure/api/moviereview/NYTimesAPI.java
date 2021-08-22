@@ -7,7 +7,6 @@ import retrofit2.http.Query;
 public interface NYTimesAPI {
 
     @GET("search.json")
-    Call<MovieReviewsResponse> moviesReview(
-        @Query("api-key") String apiKey, @Query("query") String movieName);
+    Call<MovieReviewsResponse> moviesReview(@Query("api-key") String apiKey, @Query("query") String movieName);
 
 }

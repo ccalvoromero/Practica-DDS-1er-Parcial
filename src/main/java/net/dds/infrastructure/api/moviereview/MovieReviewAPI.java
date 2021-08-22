@@ -1,6 +1,7 @@
 package net.dds.infrastructure.api.moviereview;
 
 import net.dds.domain.MovieReview;
+import net.dds.domain.exceptions.MovieReviewNotFoundException;
 import retrofit2.Call;
 import retrofit2.Response;
 import retrofit2.Retrofit;
@@ -27,7 +28,10 @@ public class MovieReviewAPI implements MovieReview {
             NYTimesAPI nyTimesAPI = retrofit.create(NYTimesAPI.class);
             Call<MovieReviewsResponse> request = nyTimesAPI.moviesReview(apiKey, name);
             Response<MovieReviewsResponse> response = request.execute();
-            return response.body().toString(); //TODO Revisar bien response :)
+              return response.body() != null && response.isSuccessful() ?
+                response.body().results.stream()
+                    .findFirst().orElseThrow(MovieReviewNotFoundException::new)
+                    .buildResponse() : "Not review found";
         }catch(IOException e) {
             throw new RuntimeException();
         }

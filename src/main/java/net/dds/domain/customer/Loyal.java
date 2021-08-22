@@ -3,7 +3,7 @@ package net.dds.domain.customer;
 public class Loyal implements CustomerType {
 
     private static CustomerType instance;
-    private static final double membershipCoefficient = 0.85;
+    private static final double customerCoefficient = 0.85;
     private static final int maximumMovieIssues = 8;
 
     public static CustomerType instance() {
@@ -22,7 +22,7 @@ public class Loyal implements CustomerType {
 
     @Override
     public Double customerPrice(Double rentPrice) {
-        return rentPrice * membershipCoefficient;
+        return rentPrice * customerCoefficient;
     }
 
 }
