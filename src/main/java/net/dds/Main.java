@@ -1,14 +1,15 @@
 package net.dds;
 
-import net.dds.domain.MovieReview;
-import net.dds.infrastructure.api.moviereview.MovieReviewAPI;
+
+import net.dds.domain.MovieRepository;
+import net.dds.domain.movie.Movie;
+import net.dds.infrastructure.database.SQLMovieRepository;
 
 public class Main {
 
     public static void main(String[] args) {
-        MovieReview movieReview = new MovieReviewAPI();
-        String response = movieReview.findByName("Harry Potter");
-        System.out.println(response);
+        MovieRepository movieRepository = new SQLMovieRepository();
+        Movie movie = movieRepository.findAvailableMovie(1);
     }
 
 }
