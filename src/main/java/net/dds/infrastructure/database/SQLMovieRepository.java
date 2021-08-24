@@ -17,11 +17,11 @@ public class SQLMovieRepository implements MovieRepository {
         Movie movie = null;
         try {
             Connection dbConnection = DbConnector.connect();
-            String query = "select * from movie where movie_id = " + id;
+            String query = "select * from movie where movie_id = " + id + ";";
             Statement stmt = dbConnection.createStatement();
             ResultSet rs = stmt.executeQuery(query);
             while (rs.next())
-                movie = new Movie(rs.getInt(1), rs.getString(2), rs.getDouble(3));
+                movie = new Movie(rs.getInt(2), rs.getString(3), rs.getDouble(4));
             if(movie == null)
                 throw new RuntimeException();
         }catch(Exception ignored) {}
