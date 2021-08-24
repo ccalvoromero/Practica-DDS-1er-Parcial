@@ -22,7 +22,7 @@ public class RentMovie {
         Movie movie = movieRepository.findAvailableMovie(movieId);
         Customer customer = customerRepository.findByDocumentNumber(customerDocumentNumber);
         customer.rentMovie(movie, rentalDays, paymentMethod);
-        movieRepository.save(movie);
+        movieRepository.update(movie);
         customerRepository.save(customer);
     }
 

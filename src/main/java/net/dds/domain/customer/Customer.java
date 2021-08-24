@@ -22,6 +22,13 @@ public class Customer {
         this.type = Regular.instance();
     }
 
+    public Customer(Integer documentNumber, Integer rentedMoviesWithoutIssues, Integer movieIssues, CustomerType type) {
+        this.documentNumber = documentNumber;
+        this.rentedMoviesWithoutIssues = rentedMoviesWithoutIssues;
+        this.movieIssues = movieIssues;
+        this.type = type;
+    }
+
     public void rentMovie(Movie movie, Integer days, PaymentMethod paymentMethod) {
         Double rentPrice = movie.rentPrice(days);
         paymentMethod.pay(type.customerPrice(rentPrice));
@@ -73,4 +80,19 @@ public class Customer {
         return this.purchasedMovies.size();
     }
 
+    public void addRentedMovie(Movie movie) {
+        rentedMovies.add(movie);
+    }
+
+    public void addPurchasedMovies(Movie movie){
+        purchasedMovies.add(movie);
+    }
+
+    public CustomerType type() {
+        return this.type;
+    }
+
+    public Integer documentNumber() {
+        return documentNumber;
+    }
 }

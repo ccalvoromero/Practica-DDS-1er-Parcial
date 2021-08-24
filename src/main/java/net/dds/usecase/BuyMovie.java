@@ -22,7 +22,7 @@ public class BuyMovie {
         Movie movie = movieRepository.findAvailableMovie(movieId);
         Customer customer = customerRepository.findByDocumentNumber(customerDocumentNumber);
         customer.buyMovie(movie, paymentMethod);
-        movieRepository.save(movie);
+        movieRepository.update(movie);
         customerRepository.save(customer);
     }
 

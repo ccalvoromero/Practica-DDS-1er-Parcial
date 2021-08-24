@@ -1,15 +1,16 @@
 package net.dds;
 
 
-import net.dds.domain.MovieRepository;
-import net.dds.domain.movie.Movie;
-import net.dds.infrastructure.database.SQLMovieRepository;
+import net.dds.domain.CustomerRepository;
+import net.dds.domain.customer.Customer;
+import net.dds.infrastructure.database.SQLCustomerRepository;
 
 public class Main {
 
     public static void main(String[] args) {
-        MovieRepository movieRepository = new SQLMovieRepository();
-        Movie movie = movieRepository.findAvailableMovie(1);
+        CustomerRepository customerRepository = new SQLCustomerRepository();
+        Customer customer = customerRepository.findByDocumentNumber(39561928);
+        customerRepository.save(customer);
     }
 
 }

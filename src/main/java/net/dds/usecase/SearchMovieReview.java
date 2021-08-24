@@ -14,8 +14,8 @@ public class SearchMovieReview {
         this.movieRepository = movieRepository;
     }
 
-    public String execute(Integer movieId) {
-        Movie movie = movieRepository.findById(movieId);
+    public String execute(Integer physicalMovieId) {
+        Movie movie = movieRepository.findById(physicalMovieId);
         return movieReview.findByName(movie.name());
     }
 

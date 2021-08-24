@@ -6,20 +6,22 @@ import static net.dds.domain.movie.MovieState.*;
 
 public class Movie implements MovieComponent {
 
-    private final Integer id;
+    private final Integer movieId;
+    private final Integer physicalMovieId;
     private final String name;
     private final Double buyPrice;
     private MovieState state = AVAILABLE;
     private static final Double rentalCoefficient = 0.05;
 
-    public Movie(Integer id, String name, Double buyPrice) {
-        this.id = id;
+    public Movie(Integer id, Integer physicalMovieId, String name, Double buyPrice) {
+        this.movieId = id;
         this.name = name;
         this.buyPrice = buyPrice;
+        this.physicalMovieId = physicalMovieId;
     }
 
     public Integer id() {
-        return this.id;
+        return this.movieId;
     }
 
     public String name() {
@@ -48,6 +50,10 @@ public class Movie implements MovieComponent {
 
     public void returned() {
         this.state = AVAILABLE;
+    }
+
+    public Integer physicalMovieId() {
+        return this.physicalMovieId;
     }
 
 }

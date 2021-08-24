@@ -14,7 +14,7 @@ public class InMemoryMovieRepository implements MovieRepository {
     private final List<Movie> movies = new ArrayList<>();
 
     @Override
-    public void save(Movie movie) {
+    public void update(Movie movie) {
         movies.add(movie);
     }
 

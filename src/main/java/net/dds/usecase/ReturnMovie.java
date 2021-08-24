@@ -23,7 +23,7 @@ public class ReturnMovie {
         Customer customer = customerRepository.findByDocumentNumber(documentNumber);
         qualityStrategy.check(customer);
         customer.returnMovie(movie);
-        movieRepository.save(movie);
+        movieRepository.update(movie);
         customerRepository.save(customer);
     }
 
