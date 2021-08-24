@@ -4,9 +4,9 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.DriverManager;
 
-public class DbConnector {
+public class MySQLConnector implements DatabaseConnector {
 
-    public static Connection connect() {
+    public Connection create() {
         Connection conn = null;
         try{
             conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/utndds?serverTimezone=UTC", "root", "ROOT");

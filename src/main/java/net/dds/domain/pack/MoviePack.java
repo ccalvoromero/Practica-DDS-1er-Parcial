@@ -6,12 +6,13 @@ import java.util.ArrayList;
 public class MoviePack implements MovieComponent {
 
     private final List<MovieComponent> movies = new ArrayList<>();
+    private final static Double discount = 0.70;
 
     @Override
     public Double buyPrice() {
         return movies.stream()
             .mapToDouble(MovieComponent::buyPrice)
-            .sum();
+            .sum() * discount;
     }
 
     public void addMovieComponent(MovieComponent movieComponent) {

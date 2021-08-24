@@ -6,15 +6,21 @@ import java.sql.Connection;
 
 import net.dds.domain.movie.Movie;
 import net.dds.domain.MovieRepository;
-import net.dds.infrastructure.database.connection.DbConnector;
+import net.dds.infrastructure.database.connection.DatabaseConnector;
 
 public class SQLMovieRepository implements MovieRepository {
+
+    private final DatabaseConnector databaseConnector;
+
+    public SQLMovieRepository(DatabaseConnector databaseConnector) {
+        this.databaseConnector = databaseConnector;
+    }
 
     @Override
     public Movie findAvailableMovie(Integer movieId) {
         Movie movie = null;
         try {
-            Connection dbConnection = DbConnector.connect();
+            Connection dbConnection = databaseConnector.create();
             String query = "select * from movie where movie_id = " + movieId + " and movie_state_id = 1;";
             Statement stmt = dbConnection.createStatement();
             ResultSet rs = stmt.executeQuery(query);
@@ -28,7 +34,7 @@ public class SQLMovieRepository implements MovieRepository {
     public Movie findRentedMovie(Integer physicalMovieId) {
         Movie movie = null;
         try {
-            Connection dbConnection = DbConnector.connect();
+            Connection dbConnection = databaseConnector.create();
             String query = "select * from movie where physical_movie_id = " + physicalMovieId + " and movie_state_id = 2;";
             Statement stmt = dbConnection.createStatement();
             ResultSet rs = stmt.executeQuery(query);
@@ -41,7 +47,7 @@ public class SQLMovieRepository implements MovieRepository {
     @Override
     public void update(Movie movie) {
         try {
-            Connection dbConnection = DbConnector.connect();
+            Connection dbConnection = databaseConnector.create();
             String query = "UPDATE movie SET movie_state_id = " + movie.state() + " WHERE physical_movie_id = " + movie.physicalMovieId() + ";";
             Statement stmt = dbConnection.createStatement();
             stmt.executeQuery(query);
@@ -52,7 +58,7 @@ public class SQLMovieRepository implements MovieRepository {
     public Movie findById(Integer physicalMovieId) {
         Movie movie = null;
         try {
-            Connection dbConnection = DbConnector.connect();
+            Connection dbConnection = databaseConnector.create();
             String query = "select * from movie where physical_movie_id = " + physicalMovieId + ";";
             Statement stmt = dbConnection.createStatement();
             ResultSet rs = stmt.executeQuery(query);

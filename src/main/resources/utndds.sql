@@ -34,7 +34,7 @@ create table customer_rented_movies(
     physical_movie_id integer,
     rented_start_date datetime,
     rented_end_date datetime,
-    constraint customer_id__rented_fk foreign key (customer_id) references customer(customer_id),
+    constraint customer_id_rented_fk foreign key (customer_id) references customer(customer_id),
     constraint physical_movie_id_rented_fk foreign key (physical_movie_id) references movie(physical_movie_id)
 );
 
@@ -42,7 +42,6 @@ create table customer_purchased_movies(
     customer_id integer,
     physical_movie_id integer,
     purchase_date datetime,
-    total_price double,
     constraint customer_id_purchased_fk foreign key (customer_id) references customer(customer_id),
     constraint physical_movie_id_purchased_fk foreign key (physical_movie_id) references movie(physical_movie_id)
 );

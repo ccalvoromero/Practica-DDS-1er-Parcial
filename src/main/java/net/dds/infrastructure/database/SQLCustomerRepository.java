@@ -1,24 +1,38 @@
 package net.dds.infrastructure.database;
 
+import java.sql.ResultSet;
+import java.sql.Statement;
+import java.sql.Connection;
+
 import net.dds.domain.customer.*;
 import net.dds.domain.movie.Movie;
 import net.dds.domain.CustomerRepository;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.Statement;
+import net.dds.infrastructure.database.connection.DatabaseConnector;
 
-import net.dds.infrastructure.database.connection.DbConnector;
+/*
+    insert customer_rented_movies (customer_id, physical_movie_id, rented_start_date) values (2, 1, sysdate()); -- cuando rentan
+    update customer_rented_movies set rented_end_date = sysdate() where customer_id = 2 and physical_movie_id = 1; -- cuando devuelven la peli
+    insert customer_purchased_movies (customer_id, physical_movie_id, purchase_date) values (2, 1, sysdate()); -- cuando compran la peli
+ */
 
 public class SQLCustomerRepository implements CustomerRepository {
+
+    private final DatabaseConnector databaseConnector;
+
+    public SQLCustomerRepository(DatabaseConnector databaseConnector) {
+        this.databaseConnector = databaseConnector;
+    }
 
     @Override
     public Customer findByDocumentNumber(Integer documentNumber){
         Customer customer = null;
         ResultSet rs;
         try {
-            Connection dbConnection = DbConnector.connect();
-            String customerAndRentedMovies = "select c.document_number, c.rented_movies_without_issues, c.movie_issues, c.customer_type_id, m.movie_id, m.physical_movie_id, m.movie_name, m.buy_price\n" +
+            Connection dbConnection = databaseConnector.create();
+            String customerAndRentedMovies =
+                "select c.document_number, c.rented_movies_without_issues, c.movie_issues," +
+                " c.customer_type_id, m.movie_id, m.physical_movie_id, m.movie_name, m.buy_price\n" +
                 "from customer c\n" +
                 "inner join customer_rented_movies crm on c.customer_id = crm.customer_id\n" +
                 "inner join movie m on m.physical_movie_id = crm.physical_movie_id\n" +
@@ -27,7 +41,7 @@ public class SQLCustomerRepository implements CustomerRepository {
             rs = stmt.executeQuery(customerAndRentedMovies);
             while (rs.next()){
                 if(rs.isFirst())
-                    customer = new Customer(rs.getInt(1), rs.getInt(2), rs.getInt(3), customerTypeDAO(rs.getInt(4)));
+                    customer = new Customer(rs.getInt(1), rs.getInt(2), rs.getInt(3), idToCustomerType(rs.getInt(4)));
                 customer.addRentedMovie(new Movie(rs.getInt(5), rs.getInt(6), rs.getString(7), rs.getDouble(8)));
             }
             String purchasedMovies = "select m.movie_id, m.physical_movie_id, m.movie_name, m.buy_price\n" +
@@ -48,16 +62,20 @@ public class SQLCustomerRepository implements CustomerRepository {
     @Override
     public void save(Customer customer){
         try {
-            Connection dbConnection = DbConnector.connect();
-            String query = "UPDATE customer SET rented_movies_without_issues = " + customer.rentedMoviesWithoutIssues() + ", movie_issues = " + customer.movieIssues() + ", customer_type_id = " + customerTypeDAO(customer.type()) + " WHERE document_number = " + customer.documentNumber() + ";";
+            Connection dbConnection = databaseConnector.create();
+            String updateCustomer =
+                "UPDATE customer " +
+                "SET rented_movies_without_issues = " + customer.rentedMoviesWithoutIssues() +
+                ", movie_issues = " + customer.movieIssues() + ", customer_type_id = " + customerTypeToId(customer.type()) +
+                " WHERE document_number = " + customer.documentNumber() + ";";
             Statement stmt = dbConnection.createStatement();
-            stmt.executeUpdate(query);
+            stmt.executeUpdate(updateCustomer);
         }catch(Exception ex) {
             ex.printStackTrace();
         }
     }
 
-    private CustomerType customerTypeDAO(Integer customerType){
+    private CustomerType idToCustomerType(Integer customerType){
         switch (customerType){
             case 1: return Uncertain.instance();
             case 2: return Regular.instance();
@@ -66,7 +84,7 @@ public class SQLCustomerRepository implements CustomerRepository {
         }
     }
 
-    private Integer customerTypeDAO(CustomerType customerType){
+    private Integer customerTypeToId(CustomerType customerType){
         switch (customerType.getClass().getSimpleName()){
             case "Uncertain": return 1;
             case "Regular": return 2;
