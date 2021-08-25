@@ -6,7 +6,7 @@ public class Cash implements PaymentMethod {
 
     @Override
     public void pay(Double amount) {
-        System.out.println("Final price: " + amount * discount);
+        System.out.println("Cash pay successfully. Amount: " + amount * discount);
     }
 
 }

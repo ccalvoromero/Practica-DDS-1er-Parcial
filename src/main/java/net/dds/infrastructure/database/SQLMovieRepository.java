@@ -84,13 +84,4 @@ public class SQLMovieRepository implements MovieRepository {
         }
     }
 
-    private Integer movieStateToId(MovieState movieState){
-        switch (movieState.name()){
-            case "Careless": return 1;
-            case "Regular": return 2;
-            case "Loyal": return 3;
-            default: throw new RuntimeException();
-        }
-    }
-
 }

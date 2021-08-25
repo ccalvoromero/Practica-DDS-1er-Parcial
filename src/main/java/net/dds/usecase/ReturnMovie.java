@@ -10,14 +10,14 @@ import net.dds.infrastructure.database.operationtype.ReturnSave;
 
 public class ReturnMovie {
 
-    private final QualityChecker qualityStrategy;
+    private final QualityChecker qualityChecker;
     private final MovieRepository movieRepository;
     private final CustomerRepository customerRepository;
     private final OperationRepository operationRepository;
 
-    public ReturnMovie(QualityChecker issuesStrategy, MovieRepository movieRepository,
+    public ReturnMovie(QualityChecker qualityChecker, MovieRepository movieRepository,
         CustomerRepository customerRepository, OperationRepository operationRepository) {
-            this.qualityStrategy = issuesStrategy;
+            this.qualityChecker = qualityChecker;
             this.movieRepository = movieRepository;
             this.customerRepository = customerRepository;
             this.operationRepository = operationRepository;
@@ -26,7 +26,7 @@ public class ReturnMovie {
     public void execute(Integer physicalMovieId, Integer documentNumber) {
         Movie movie = movieRepository.findRentedMovie(physicalMovieId);
         Customer customer = customerRepository.findByDocumentNumber(documentNumber);
-        qualityStrategy.check(customer);
+        qualityChecker.check(customer);
         customer.returnMovie(movie);
         movieRepository.update(movie);
         customerRepository.save(customer);
