@@ -28,7 +28,6 @@ public class BuyMovie {
         Customer customer = customerRepository.findByDocumentNumber(customerDocumentNumber);
         customer.buyMovie(movie, paymentMethod);
         movieRepository.update(movie);
-        customerRepository.save(customer);
         operationRepository.save(customer, movie, new BuySave());
     }
 

@@ -4,12 +4,10 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 import java.sql.Connection;
 
-import net.dds.domain.exceptions.UnavailableMovieException;
 import net.dds.domain.movie.Movie;
-import net.dds.domain.customer.Loyal;
-import net.dds.domain.customer.Regular;
 import net.dds.domain.MovieRepository;
 import net.dds.domain.movie.MovieState;
+import net.dds.domain.exceptions.UnavailableMovieException;
 
 import net.dds.infrastructure.database.connection.DatabaseConnector;
 
@@ -32,7 +30,7 @@ public class SQLMovieRepository implements MovieRepository {
             Statement stmt = dbConnection.createStatement();
             ResultSet rs = stmt.executeQuery(query);
             while (rs.next())
-                movie = new Movie(rs.getInt(1), rs.getInt(2), rs.getString(3), rs.getDouble(4));
+                movie = new Movie(rs.getInt(1), rs.getInt(2), rs.getString(3), rs.getDouble(4), AVAILABLE);
         }catch(Exception ignored) {}
         if(movie == null)
             throw new UnavailableMovieException();
@@ -48,7 +46,7 @@ public class SQLMovieRepository implements MovieRepository {
             Statement stmt = dbConnection.createStatement();
             ResultSet rs = stmt.executeQuery(query);
             while (rs.next())
-                movie = new Movie(rs.getInt(1), rs.getInt(2), rs.getString(3), rs.getDouble(4));
+                movie = new Movie(rs.getInt(1), rs.getInt(2), rs.getString(3), rs.getDouble(4), RENTED);
         }catch(Exception ignored) {}
         return movie;
     }
@@ -56,9 +54,8 @@ public class SQLMovieRepository implements MovieRepository {
     @Override
     public void update(Movie movie) {
         try {
-
             Connection dbConnection = databaseConnector.create();
-            String query = "UPDATE movie SET movie_state_id = " + movie.state().ordinal() + " WHERE physical_movie_id = " + movie.physicalMovieId() + ";";
+            String query = "UPDATE movie SET movie_state_id = " + movie.state().id() + " WHERE physical_movie_id = " + movie.physicalMovieId() + ";";
             Statement stmt = dbConnection.createStatement();
             stmt.executeUpdate(query);
         }catch(Exception ignored) {}
@@ -73,7 +70,7 @@ public class SQLMovieRepository implements MovieRepository {
             Statement stmt = dbConnection.createStatement();
             ResultSet rs = stmt.executeQuery(query);
             while (rs.next())
-                movie = new Movie(rs.getInt(1), rs.getInt(2), rs.getString(3), rs.getDouble(4));
+                movie = new Movie(rs.getInt(1), rs.getInt(2), rs.getString(3), rs.getDouble(4), idToMovieState(rs.getInt(5)));
         }catch(Exception ignored) {}
         return movie;
     }

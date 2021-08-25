@@ -28,7 +28,6 @@ public class RentMovie {
         Customer customer = customerRepository.findByDocumentNumber(customerDocumentNumber);
         customer.rentMovie(movie, rentalDays, paymentMethod);
         movieRepository.update(movie);
-        customerRepository.save(customer);
         operationRepository.save(customer, movie, new RentSave());
     }
 

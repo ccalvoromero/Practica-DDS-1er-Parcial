@@ -10,6 +10,8 @@ import net.dds.domain.CustomerRepository;
 
 import net.dds.infrastructure.database.connection.DatabaseConnector;
 
+import static net.dds.domain.movie.MovieState.*;
+
 public class SQLCustomerRepository implements CustomerRepository {
 
     private final DatabaseConnector databaseConnector;
@@ -26,7 +28,7 @@ public class SQLCustomerRepository implements CustomerRepository {
             Connection dbConnection = databaseConnector.create();
             String customerAndRentedMovies =
                 "select c.document_number, c.rented_movies_without_issues, c.movie_issues," +
-                " c.customer_type_id, m.movie_id, m.physical_movie_id, m.movie_name, m.buy_price\n" +
+                " c.customer_type_id, m.movie_id, m.physical_movie_id, m.movie_name, m.buy_price, m.movie_state_id\n" +
                 "from customer c\n" +
                 "inner join customer_rented_movies crm on c.customer_id = crm.customer_id\n" +
                 "inner join movie m on m.physical_movie_id = crm.physical_movie_id\n" +
@@ -36,7 +38,7 @@ public class SQLCustomerRepository implements CustomerRepository {
             while (rs.next()){
                 if(rs.isFirst())
                     customer = new Customer(rs.getInt(1), rs.getInt(2), rs.getInt(3), idToCustomerType(rs.getInt(4)));
-                customer.addRentedMovie(new Movie(rs.getInt(5), rs.getInt(6), rs.getString(7), rs.getDouble(8)));
+                customer.addRentedMovie(new Movie(rs.getInt(5), rs.getInt(6), rs.getString(7), rs.getDouble(8), RENTED));
             }
             String purchasedMovies = "select m.movie_id, m.physical_movie_id, m.movie_name, m.buy_price\n" +
                 "from customer c\n" +
@@ -46,7 +48,7 @@ public class SQLCustomerRepository implements CustomerRepository {
             stmt = dbConnection.createStatement();
             rs = stmt.executeQuery(purchasedMovies);
             while (rs.next())
-                customer.addPurchasedMovies(new Movie(rs.getInt(1), rs.getInt(2), rs.getString(3), rs.getDouble(4)));
+                customer.addPurchasedMovies(new Movie(rs.getInt(1), rs.getInt(2), rs.getString(3), rs.getDouble(4), SOLD));
         }catch(Exception ex) {
             ex.printStackTrace();
         }

@@ -13,11 +13,12 @@ public class Movie implements MovieComponent {
     private MovieState state = AVAILABLE;
     private static final Double rentalCoefficient = 0.05;
 
-    public Movie(Integer id, Integer physicalMovieId, String name, Double buyPrice) {
+    public Movie(Integer id, Integer physicalMovieId, String name, Double buyPrice, MovieState state) {
         this.movieId = id;
         this.name = name;
         this.buyPrice = buyPrice;
         this.physicalMovieId = physicalMovieId;
+        this.state = state;
     }
 
     public Integer id() {
