@@ -10,12 +10,6 @@ import net.dds.domain.CustomerRepository;
 
 import net.dds.infrastructure.database.connection.DatabaseConnector;
 
-/*
-    insert customer_rented_movies (customer_id, physical_movie_id, rented_start_date) values (2, 1, sysdate()); -- cuando rentan
-    update customer_rented_movies set rented_end_date = sysdate() where customer_id = 2 and physical_movie_id = 1; -- cuando devuelven la peli
-    insert customer_purchased_movies (customer_id, physical_movie_id, purchase_date) values (2, 1, sysdate()); -- cuando compran la peli
- */
-
 public class SQLCustomerRepository implements CustomerRepository {
 
     private final DatabaseConnector databaseConnector;
@@ -77,7 +71,7 @@ public class SQLCustomerRepository implements CustomerRepository {
 
     private CustomerType idToCustomerType(Integer customerType){
         switch (customerType){
-            case 1: return Uncertain.instance();
+            case 1: return Careless.instance();
             case 2: return Regular.instance();
             case 3: return Loyal.instance();
             default: throw new RuntimeException();
@@ -86,7 +80,7 @@ public class SQLCustomerRepository implements CustomerRepository {
 
     private Integer customerTypeToId(CustomerType customerType){
         switch (customerType.getClass().getSimpleName()){
-            case "Uncertain": return 1;
+            case "Careless": return 1;
             case "Regular": return 2;
             case "Loyal": return 3;
             default: throw new RuntimeException();

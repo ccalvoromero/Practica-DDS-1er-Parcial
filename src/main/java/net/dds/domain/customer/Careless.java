@@ -1,6 +1,6 @@
 package net.dds.domain.customer;
 
-public class Uncertain implements CustomerType {
+public class Careless implements CustomerType {
 
     private static CustomerType instance;
     private static final double customerCoefficient = 1.05;
@@ -8,7 +8,7 @@ public class Uncertain implements CustomerType {
 
     public static CustomerType instance() {
         if(instance == null)
-            instance = new Uncertain();
+            instance = new Careless();
         return instance;
     }
 

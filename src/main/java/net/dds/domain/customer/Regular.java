@@ -16,7 +16,7 @@ public class Regular implements CustomerType {
     @Override
     public void change(Customer customer) {
         if(customer.movieIssues() >= maximumMovieIssues){
-            customer.setType(Uncertain.instance());
+            customer.setType(Careless.instance());
             customer.resetMovieIssues();
         } else if(customer.rentedMoviesWithoutIssues() >= minimumMovieWithoutIssues &&
             customer.totalPurchasedMovies() >= minimumPurchasedMovies)

@@ -4,9 +4,16 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 import java.sql.Connection;
 
+import net.dds.domain.exceptions.UnavailableMovieException;
 import net.dds.domain.movie.Movie;
+import net.dds.domain.customer.Loyal;
+import net.dds.domain.customer.Regular;
 import net.dds.domain.MovieRepository;
+import net.dds.domain.movie.MovieState;
+
 import net.dds.infrastructure.database.connection.DatabaseConnector;
+
+import static net.dds.domain.movie.MovieState.*;
 
 public class SQLMovieRepository implements MovieRepository {
 
@@ -27,6 +34,8 @@ public class SQLMovieRepository implements MovieRepository {
             while (rs.next())
                 movie = new Movie(rs.getInt(1), rs.getInt(2), rs.getString(3), rs.getDouble(4));
         }catch(Exception ignored) {}
+        if(movie == null)
+            throw new UnavailableMovieException();
         return movie;
     }
 
@@ -47,10 +56,11 @@ public class SQLMovieRepository implements MovieRepository {
     @Override
     public void update(Movie movie) {
         try {
+
             Connection dbConnection = databaseConnector.create();
-            String query = "UPDATE movie SET movie_state_id = " + movie.state() + " WHERE physical_movie_id = " + movie.physicalMovieId() + ";";
+            String query = "UPDATE movie SET movie_state_id = " + movie.state().ordinal() + " WHERE physical_movie_id = " + movie.physicalMovieId() + ";";
             Statement stmt = dbConnection.createStatement();
-            stmt.executeQuery(query);
+            stmt.executeUpdate(query);
         }catch(Exception ignored) {}
     }
 
@@ -66,6 +76,24 @@ public class SQLMovieRepository implements MovieRepository {
                 movie = new Movie(rs.getInt(1), rs.getInt(2), rs.getString(3), rs.getDouble(4));
         }catch(Exception ignored) {}
         return movie;
+    }
+
+    private MovieState idToMovieState(Integer movieState){
+        switch (movieState){
+            case 1: return AVAILABLE;
+            case 2: return RENTED;
+            case 3: return SOLD;
+            default: throw new RuntimeException();
+        }
+    }
+
+    private Integer movieStateToId(MovieState movieState){
+        switch (movieState.name()){
+            case "Careless": return 1;
+            case "Regular": return 2;
+            case "Loyal": return 3;
+            default: throw new RuntimeException();
+        }
     }
 
 }

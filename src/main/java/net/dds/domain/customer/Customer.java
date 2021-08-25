@@ -15,13 +15,6 @@ public class Customer {
     private Integer movieIssues;
     private Integer rentedMoviesWithoutIssues;
 
-    public Customer(Integer documentNumber) {
-        this.documentNumber = documentNumber;
-        this.movieIssues = 0;
-        this.rentedMoviesWithoutIssues = 0;
-        this.type = Regular.instance();
-    }
-
     public Customer(Integer documentNumber, Integer rentedMoviesWithoutIssues, Integer movieIssues, CustomerType type) {
         this.documentNumber = documentNumber;
         this.rentedMoviesWithoutIssues = rentedMoviesWithoutIssues;
@@ -95,4 +88,5 @@ public class Customer {
     public Integer documentNumber() {
         return documentNumber;
     }
+
 }

@@ -15,11 +15,12 @@ public class BuyMovie {
     private final CustomerRepository customerRepository;
     private final OperationRepository operationRepository;
 
-    public BuyMovie(PaymentMethod paymentMethod, MovieRepository movieRepository, CustomerRepository customerRepository, OperationRepository operationRepository) {
-        this.paymentMethod = paymentMethod;
-        this.movieRepository = movieRepository;
-        this.customerRepository = customerRepository;
-        this.operationRepository = operationRepository;
+    public BuyMovie(PaymentMethod paymentMethod, MovieRepository movieRepository,
+        CustomerRepository customerRepository, OperationRepository operationRepository) {
+            this.paymentMethod = paymentMethod;
+            this.movieRepository = movieRepository;
+            this.customerRepository = customerRepository;
+            this.operationRepository = operationRepository;
     }
 
     public void execute(Integer movieId, Integer customerDocumentNumber) {
